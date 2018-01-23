@@ -1,15 +1,20 @@
-from flask import request, jsonify
+from flask import request, jsonify, render_template
+
 from lessenger import app
+from location import get_lat_long
+
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+	lat, lon = get_lat_long("1600 Amphitheatre Parkway, Mountain View, CA")
+	return jsonify(lat[1], lon[1])
 
 @app.route('/chat/messages', methods = ['POST'])
 def lessenger():
+	data = request.form
+	resp = {"messages": []}
+
 	if request.method == 'POST':
-		resp = {"messages": []}
-		data = request.form
 		if data['action'] == 'join': 
 			resp['messages'].append({
 				"type": "text", 
@@ -19,4 +24,4 @@ def lessenger():
 		elif data['action'] == 'message':
 			pass
 
-		return jsonify(resp)
+	return jsonify(resp)
