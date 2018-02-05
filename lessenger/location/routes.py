@@ -1,11 +1,11 @@
-from flask_googlemaps import GoogleMaps
-import requests
+from flask import Blueprint
 
-from lessenger import app
+import requests
 
 GOOGLE_API_KEY = "AIzaSyD7W7v5psM8TDJwUV2WxsPkoYRtByh07Y0"
 
-GoogleMaps(app, key=GOOGLE_API_KEY)
+location = Blueprint('location', __name__)
+
 
 base_url = "https://maps.googleapis.com/maps/api/geocode/json"
 
@@ -44,3 +44,8 @@ def get_lat_long(location):
     location_details = _get_location_details(location)
     lat, lon = location_details['results'][0]['geometry']['location'].items()
     return lat, lon
+
+
+@location.route('/')
+def index():
+    return "Location"

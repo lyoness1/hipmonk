@@ -1,15 +1,16 @@
-from flask import request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template
 
-from lessenger import app
-from location import get_lat_long
+from lessenger.location.routes import get_lat_long
+
+main = Blueprint('main', __name__)
 
 
-@app.route('/')
+@main.route('/')
 def index():
 	lat, lon = get_lat_long("1600 Amphitheatre Parkway, Mountain View, CA")
 	return jsonify(lat[1], lon[1])
 
-@app.route('/chat/messages', methods = ['POST'])
+@main.route('/chat/messages', methods = ['POST'])
 def lessenger():
 	data = request.form
 	resp = {"messages": []}
