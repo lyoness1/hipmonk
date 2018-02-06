@@ -1,13 +1,14 @@
 from flask import Blueprint, request, jsonify, render_template
 
-from lessenger.location.routes import get_lat_long
+from lessenger.location.model import Geolocator
 
 main = Blueprint('main', __name__)
 
 
 @main.route('/')
 def index():
-	lat, lon = get_lat_long("1600 Amphitheatre Parkway, Mountain View, CA")
+	locator = Geolocator()
+	lat, lon = locator.get_lat_long("1600 Amphitheatre Parkway, Mountain View, CA")
 	return jsonify(lat[1], lon[1])
 
 @main.route('/chat/messages', methods = ['POST'])
